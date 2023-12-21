@@ -1,15 +1,54 @@
 
 import { FcGoogle } from "react-icons/fc";
 import { FaGithubSquare } from "react-icons/fa";
-const handleSignUp =()=>{
-    
-}
+import useAuth from "../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { saveUser } from "../api/auth";
+
+
 const SignUp = () => {
+    const { createUser, googleSignIn, } = useAuth()
+    const navigate = useNavigate()
+    const handleSignUp = async (e) => {
+        e.preventDefault()
+        const form = e.target;
+        const userName = form.userName.value;
+        const userEmail = form.userEmail.value;
+        const userPassword = form.password.value;
+        console.log(userName, userEmail, userPassword)
+
+        try {
+           const result=await createUser(userEmail, userPassword)
+           await saveUser(result?.user)
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+
+    }
+
+    // google sign in ---------------
+    const handleGoogleSignUp = async () => {
+        try {
+            // 2. user registration with google
+            const result=await googleSignIn();
+
+            await saveUser(result?.user)
+
+
+            navigate('/');
+            toast.success('SignUp successfully');
+        } catch (err) {
+            console.log(err);
+            toast.error(err?.message);
+        }
+    };
     return (
         <div className="flex items-center justify-center h-screen">
             <div className="w-full max-w-md p-8 space-y-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
                 <h1 className="text-2xl font-bold text-center">Sign Up</h1>
-                <form  onSubmit={handleSignUp} className="space-y-6">
+                <form onSubmit={handleSignUp} className="space-y-6">
                     <div className="space-y-1 text-sm">
                         <label className="block dark:text-gray-400">User Name</label>
                         <input
@@ -55,20 +94,20 @@ const SignUp = () => {
                     <div className="flex-1 h-px sm:w-16 border-t dark:border-gray-700"></div>
                 </div>
                 <div className="flex justify-center space-x-4">
-                    <button aria-label="Log in with Google" className="p-3 rounded-sm border">
+                    <button onClick={handleGoogleSignUp} aria-label="Log in with Google" className="p-3 rounded-sm border">
                         <FcGoogle />
 
                     </button>
-                    
+
                     <button aria-label="Log in with GitHub" className="p-3 rounded-sm border">
-                      <FaGithubSquare />
+                        <FaGithubSquare />
                     </button>
                 </div>
                 <p className="text-xs text-center sm:px-6 dark:text-gray-400">
                     Already have an account?{' '}
-                    <a rel="noopener noreferrer" href="#" className="underline dark:text-gray-100">
+                    <Link to='/login' className="underline dark:text-gray-100">
                         Sign In
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>
