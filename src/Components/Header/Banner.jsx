@@ -12,7 +12,7 @@ const Banner = () => {
       <div className="banner-content">
         <h1>Effortless Task Management for Teams</h1>
         <p>Your solution to organized collaboration and productivity</p>
-        <button className="explore-button">Let's Explore</button>
+        <button className="explore-button">Lets Explore</button>
       </div>
     </div>
   );
