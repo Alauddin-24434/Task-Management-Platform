@@ -1,10 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import MenuItem from "../MenuItem";
 import useAuth from "../../../hooks/useAuth";
+import useRole from "../../../hooks/useRole";
+import UserMenu from "./Menu/UserMenu";
+import AdminMenu from "./Menu/AdminMenu";
 
 
 const Sidebar = () => {
     const { logout } = useAuth()
+    const [role] = useRole()
+    console.log("my role",role)
     const navigate = useNavigate()
     const handleLogout = () => {
         logout()
@@ -36,6 +41,18 @@ const Sidebar = () => {
                                 label='Profile'
                                 address='user-profile'
                             />
+
+                        
+                         
+                        
+                        
+                            {
+                                role?.role === "user" &&  <UserMenu/>
+                            }
+                        
+                            {
+                                role?.role === "admin" && <AdminMenu />
+                            }
                         </nav>
                     </div>
                 </div>

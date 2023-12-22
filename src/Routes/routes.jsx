@@ -5,6 +5,7 @@ import Login from "../LandingPage/Login";
 import SignUp from "../LandingPage/SignUp";
 
 import DashBoardLayout from "../Layouts/DashBoardLayout";
+import App from "../Components/Dashboard/App";
 
 
 const router = createBrowserRouter([
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       element:<DashBoardLayout />,
       children: [
        
-      
+        { path: 'myTasks', element: <App /> },
       
       ]
     }
